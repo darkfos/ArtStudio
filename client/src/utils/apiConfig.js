@@ -1,0 +1,1 @@
+export const api = 'http://studio-site161.ru/api';

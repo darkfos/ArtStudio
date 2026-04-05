@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { api } from '../../utils/apiConfig';
 import './AuthPage.css';
 
 const AuthPage = ({ onSuccess, navigateTo }) => {
@@ -20,9 +21,6 @@ const AuthPage = ({ onSuccess, navigateTo }) => {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
   const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
   const [forgotPasswordMessage, setForgotPasswordMessage] = useState('');
-
-  // Настройки API
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,7 +45,7 @@ const AuthPage = ({ onSuccess, navigateTo }) => {
       console.log('📤 Отправка запроса на:', endpoint);
       console.log('📦 Данные:', payload);
 
-      const response = await fetch(`${API_URL}${endpoint}`, {
+      const response = await fetch(`${api}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +181,7 @@ const AuthPage = ({ onSuccess, navigateTo }) => {
     setForgotPasswordMessage('');
 
     try {
-      const response = await fetch(`${API_URL}/auth/forgot-password`, {
+      const response = await fetch(`${api}/auth/forgot-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

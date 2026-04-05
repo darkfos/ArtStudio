@@ -1,0 +1,31 @@
+services:
+  studioapi:
+    build: .
+    container_name: studioapi
+    ports:
+      - "5002:5000"
+    depends_on:
+      - studiodb
+    networks:
+      - studio
+    
+  studiodb:
+    image: mysql:latest
+    container_name: studiodb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3388:3306"
+    volumes:
+      - studio_data:/var/lib/mysql
+    networks:
+      - studio
+    
+volumes:
+  studio_data:
+
+networks:
+  studio:
+    driver: bridge

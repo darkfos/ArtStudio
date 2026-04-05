@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './ProfilePage.css';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+import { api } from '../../utils/apiConfig';
 
 const tokenUtils = {
   getAccessToken: () => localStorage.getItem('accessToken'),
@@ -39,7 +38,7 @@ const tokenUtils = {
 
     try {
       console.log('🔄 Попытка обновления токенов...');
-      const response = await fetch(`${API_URL}/auth/refresh`, {
+      const response = await fetch(`${api}/auth/refresh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken })
@@ -162,7 +161,7 @@ const ProfilePage = ({ onLogout, navigateTo }) => {
 
       if (accessToken) {
         try {
-          const userResponse = await tokenUtils.fetchWithAuth(`${API_URL}/auth/me`, {}, navigateTo);
+          const userResponse = await tokenUtils.fetchWithAuth(`${api}/auth/me`, {}, navigateTo);
           if (userResponse) {
             const userData = await userResponse.json();
             
@@ -198,7 +197,7 @@ const ProfilePage = ({ onLogout, navigateTo }) => {
     try {
       if (tokenUtils.getAccessToken()) {
         // Загружаем уроки пользователя
-        const lessonsResponse = await tokenUtils.fetchWithAuth(`${API_URL}/auth/my-lessons`, {}, navigateTo);
+        const lessonsResponse = await tokenUtils.fetchWithAuth(`${api}/auth/my-lessons`, {}, navigateTo);
         if (lessonsResponse) {
           const lessonsData = await lessonsResponse.json();
           

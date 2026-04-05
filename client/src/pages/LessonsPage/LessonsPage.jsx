@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import CourseCard from '../../components/CourseCard/CourseCard';
 import lessonService from '../../services/lessonService';
 import './LessonsPage.css';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+import { api } from '../../utils/apiConfig';
 
 const tokenUtils = {
   getAccessToken: () => localStorage.getItem('accessToken'),
@@ -43,7 +42,7 @@ const tokenUtils = {
 
     try {
       console.log('🔄 Попытка обновления токенов...');
-      const response = await fetch(`${API_URL}/auth/refresh`, {
+      const response = await fetch(`${api}/auth/refresh`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken })
@@ -87,7 +86,7 @@ const tokenUtils = {
 
     try {
       console.log('📤 Запрос с токеном:', url);
-      let response = await fetch(url, { ...options, headers });
+      let response = await fetch(api, { ...options, headers });
       
       if (response.status === 401 || response.status === 403) {
         console.log('🔄 Токен невалидный, пробуем обновить...');
@@ -96,7 +95,7 @@ const tokenUtils = {
         if (newToken) {
           console.log('✅ Токен обновлен, повторяем запрос');
           headers.Authorization = `Bearer ${newToken}`;
-          response = await fetch(url, { ...options, headers });
+          response = await fetch(api, { ...options, headers });
         } else {
           console.log('❌ Не удалось обновить токен, перенаправляем на вход');
           tokenUtils.logout(navigateTo);
@@ -162,7 +161,7 @@ const Lessons = ({ onLessonSelect, isLoggedIn, navigateTo }) => {
       const token = tokenUtils.getAccessToken();
       if (!token) return;
 
-      const response = await tokenUtils.fetchWithAuth(`${API_URL}/auth/my-lessons`, {}, navigateTo);
+      const response = await tokenUtils.fetchWithAuth(`${api}/auth/my-lessons`, {}, navigateTo);
       if (!response) return;
       
       const data = await response.json();
@@ -274,7 +273,7 @@ const Lessons = ({ onLessonSelect, isLoggedIn, navigateTo }) => {
       });
 
       const response = await tokenUtils.fetchWithAuth(
-        `${API_URL}/auth/update-progress`,
+        `${api}/auth/update-progress`,
         {
           method: 'POST',
           body: JSON.stringify({
@@ -328,7 +327,7 @@ const Lessons = ({ onLessonSelect, isLoggedIn, navigateTo }) => {
 
     try {
       const response = await tokenUtils.fetchWithAuth(
-        `${API_URL}/auth/enroll`,
+        `${api}/auth/enroll`,
         {
           method: 'POST',
           body: JSON.stringify({ lessonId: lesson.id })

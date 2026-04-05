@@ -1,10 +1,10 @@
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+import { api } from "../utils/apiConfig";
 
 class LessonService {
   // Получить все уроки
   async getAllLessons() {
     try {
-      const response = await fetch(`${API_URL}/lessons`);
+      const response = await fetch(`${api}/lessons`);
       const data = await response.json();
       
       if (!response.ok) {
@@ -21,7 +21,7 @@ class LessonService {
   // Получить популярные уроки
   async getPopularLessons() {
     try {
-      const response = await fetch(`${API_URL}/lessons/popular`);
+      const response = await fetch(`${api}/lessons/popular`);
       const data = await response.json();
       
       if (!response.ok) {
@@ -38,7 +38,7 @@ class LessonService {
   // Получить урок по ID
   async getLessonById(id) {
     try {
-      const response = await fetch(`${API_URL}/lessons/${id}`);
+      const response = await fetch(`${api}/lessons/${id}`);
       const data = await response.json();
       
       if (!response.ok) {
@@ -55,7 +55,7 @@ class LessonService {
   // Получить уроки по типу
   async getLessonsByType(type) {
     try {
-      const response = await fetch(`${API_URL}/lessons/type/${type}`);
+      const response = await fetch(`${api}/lessons/type/${type}`);
       const data = await response.json();
       
       if (!response.ok) {
@@ -72,7 +72,7 @@ class LessonService {
   // Получить уроки по уровню
   async getLessonsByLevel(level) {
     try {
-      const response = await fetch(`${API_URL}/lessons/level/${level}`);
+      const response = await fetch(`${api}/lessons/level/${level}`);
       const data = await response.json();
       
       if (!response.ok) {
@@ -89,7 +89,7 @@ class LessonService {
   // Получить уроки по категории
   async getLessonsByCategory(category) {
     try {
-      const response = await fetch(`${API_URL}/lessons/category/${category}`);
+      const response = await fetch(`${api}/lessons/category/${category}`);
       const data = await response.json();
       
       if (!response.ok) {
